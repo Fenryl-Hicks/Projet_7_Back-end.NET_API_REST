@@ -1,11 +1,11 @@
-using Dot.Net.WebApi.Domain;
+using P7CreateRestApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dot.Net.WebApi.Controllers
+namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TradeController : ControllerBase
+    public class TradesController : ControllerBase
     {
         // TODO: Inject Trade service
 

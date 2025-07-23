@@ -1,11 +1,11 @@
-using Dot.Net.WebApi.Controllers.Domain;
+using P7CreateRestApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RatingController : ControllerBase
+    public class RatingsController : ControllerBase
     {
         // TODO: Inject Rating service
 

@@ -5,11 +5,11 @@ namespace Dot.Net.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BidListController : ControllerBase
+    public class BidsController : ControllerBase
     {
         [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody] BidList bidList)
+        public IActionResult Validate([FromBody] Bid bidList)
         {
             // TODO: check data valid and save to db, after saving return bid list
             return Ok();
@@ -24,7 +24,7 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
-        public IActionResult UpdateBid(int id, [FromBody] BidList bidList)
+        public IActionResult UpdateBid(int id, [FromBody] Bid bidList)
         {
             // TODO: check required fields, if valid call service to update Bid and return list Bid
             return Ok();

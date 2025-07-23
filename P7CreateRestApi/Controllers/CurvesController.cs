@@ -1,33 +1,33 @@
+using P7CreateRestApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RuleNameController : ControllerBase
+    public class CurvesController : ControllerBase
     {
-        // TODO: Inject RuleName service
+        // TODO: Inject Curve Point service
 
         [HttpGet]
         [Route("list")]
         public IActionResult Home()
         {
-            // TODO: find all RuleName, add to model
             return Ok();
         }
 
         [HttpGet]
         [Route("add")]
-        public IActionResult AddRuleName([FromBody]RuleName trade)
+        public IActionResult AddCurvePoint([FromBody]CurvePoint curvePoint)
         {
             return Ok();
         }
 
         [HttpGet]
         [Route("validate")]
-        public IActionResult Validate([FromBody]RuleName trade)
+        public IActionResult Validate([FromBody]CurvePoint curvePoint)
         {
-            // TODO: check data valid and save to db, after saving return RuleName list
+            // TODO: check data valid and save to db, after saving return bid list
             return Ok();
         }
 
@@ -35,23 +35,23 @@ namespace Dot.Net.WebApi.Controllers
         [Route("update/{id}")]
         public IActionResult ShowUpdateForm(int id)
         {
-            // TODO: get RuleName by Id and to model then show to the form
+            // TODO: get CurvePoint by Id and to model then show to the form
             return Ok();
         }
 
         [HttpPost]
         [Route("update/{id}")]
-        public IActionResult UpdateRuleName(int id, [FromBody] RuleName rating)
+        public IActionResult UpdateCurvePoint(int id, [FromBody] CurvePoint curvePoint)
         {
-            // TODO: check required fields, if valid call service to update RuleName and return RuleName list
+            // TODO: check required fields, if valid call service to update Curve and return Curve list
             return Ok();
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteRuleName(int id)
+        public IActionResult DeleteBid(int id)
         {
-            // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
+            // TODO: Find Curve by Id and delete the Curve, return to Curve list
             return Ok();
         }
     }
