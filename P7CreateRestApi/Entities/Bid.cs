@@ -4,26 +4,26 @@ namespace P7CreateRestApi.Entities
 {
     public class Bid
     {
-        int BidListId;
-        string Account;
-        string BidType;
-        double? BidQuantity;
-        double? AskQuantity;
-        double? Ask;
-        string Benchmark;
-        DateTime? BidListDate;
-        string Commentary;
-        string BidSecurity;
-        string BidStatus;
-        string Trader;
-        string Book;
-        string CreationName;
-        DateTime? CreationDate;
-        string RevisionName;
-        DateTime? RevisionDate;
-        string DealName;
-        string DealType;
-        string SourceListId;
-        string Side;
+        public int Id { get; set; }
+        public string Account { get; set; }
+        public string BidType { get; set; }
+        public double? BidQuantity { get; set; }
+        public double? AskQuantity { get; set; }
+        public double? Ask { get; set; }
+        public string Benchmark { get; set; }
+        public DateTime? BidListDate { get; set; }
+        public string Commentary { get; set; }
+        public string BidSecurity { get; set; }
+        public string BidStatus { get; set; }
+        public string Trader { get; set; }
+        public string Book { get; set; }
+        public string CreationName { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public string RevisionName { get; set; }
+        public DateTime? RevisionDate { get; set; }
+        public string DealName { get; set; }
+        public string DealType { get; set; }
+        public string SourceListId { get; set; }
+        public string Side { get; set; }
     }
 }

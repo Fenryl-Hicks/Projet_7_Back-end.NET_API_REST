@@ -4,26 +4,26 @@ namespace P7CreateRestApi.Entities
 {
     public class Trade
     {
-        int TradeId;
-        string Account;
-        string AccountType;
-        double? BuyQuantity;
-        double? SellQuantity;
-        double? BuyPrice;
-        double? SellPrice;
-        DateTime? TradeDate;
-        string TradeSecurity;
-        string TradeStatus;
-        string Trader;
-        string Benchmark;
-        string Book;
-        string CreationName;
-        DateTime? CreationDate;
-        string RevisionName;
-        DateTime? RevisionDate;
-        string DealName;
-        string DealType;
-        string SourceListId;
-        string Side;
+        public int Id { get; set; }
+        public string Account { get; set; }
+        public string AccountType { get; set; }
+        public double? BuyQuantity { get; set; }
+        public double? SellQuantity { get; set; }
+        public double? BuyPrice { get; set; }
+        public double? SellPrice { get; set; }
+        public DateTime? TradeDate { get; set; }
+        public string TradeSecurity { get; set; }
+        public string TradeStatus { get; set; }
+        public string Trader { get; set; }
+        public string Benchmark { get; set; }
+        public string Book { get; set; }
+        public string CreationName { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public string RevisionName { get; set; }
+        public DateTime? RevisionDate { get; set; }
+        public string DealName { get; set; }
+        public string DealType { get; set; }
+        public string SourceListId { get; set; }
+        public string Side { get; set; }
     }
 }

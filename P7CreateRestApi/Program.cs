@@ -1,5 +1,7 @@
-using Dot.Net.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
+using P7CreateRestApi.Repositories;
+using P7CreateRestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -11,8 +13,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddDbContext<LocalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<BidRepository>();
+builder.Services.AddScoped<CurvePointRepository>();
+builder.Services.AddScoped<RatingRepository>();
+builder.Services.AddScoped<RuleNameRepository>();
+builder.Services.AddScoped<TradeRepository>();
+builder.Services.AddScoped<TradeService>();
+builder.Services.AddScoped<BidService>();
+builder.Services.AddScoped<CurvePointService>();
+builder.Services.AddScoped<RatingService>();
+builder.Services.AddScoped<RuleNameService>();
+
+
 
 var app = builder.Build();
 

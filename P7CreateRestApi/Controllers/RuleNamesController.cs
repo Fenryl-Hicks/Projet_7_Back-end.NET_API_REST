@@ -1,5 +1,7 @@
-using P7CreateRestApi.Entities;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
+using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,53 +9,60 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class RuleNamesController : ControllerBase
     {
-        // TODO: Inject RuleName service
+        private readonly RuleNameService _service;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public RuleNamesController(RuleNameService service)
         {
-            // TODO: find all RuleName, add to model
-            return Ok();
+            _service = service;
         }
 
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddRuleName([FromBody]RuleName trade)
+        public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            var rules = await _service.GetAllAsync();
+            return Ok(rules);
         }
 
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]RuleName trade)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            // TODO: check data valid and save to db, after saving return RuleName list
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get RuleName by Id and to model then show to the form
-            return Ok();
+            var rule = await _service.GetByIdAsync(id);
+            if (rule == null)
+                return NotFound();
+            return Ok(rule);
         }
 
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateRuleName(int id, [FromBody] RuleName rating)
+        public async Task<IActionResult> Create([FromBody] RuleName rule)
         {
-            // TODO: check required fields, if valid call service to update RuleName and return RuleName list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var created = await _service.CreateAsync(rule);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult DeleteRuleName(int id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] RuleName rule)
         {
-            // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var updated = await _service.UpdateAsync(id, rule);
+            if (!updated)
+                return NotFound();
+
+            return Ok(rule);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

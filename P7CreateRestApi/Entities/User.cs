@@ -4,10 +4,10 @@ namespace P7CreateRestApi.Entities
 {
     public class User
     {
-        int Id;
-        string Username;
-        string Password;
-        string Fullname;
-        string Role;
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Fullname { get; set; }
+        public string Role { get; set; }
     }
 }

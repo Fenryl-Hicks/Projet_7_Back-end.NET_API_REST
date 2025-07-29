@@ -4,12 +4,12 @@ namespace P7CreateRestApi.Entities
 {
     public class RuleName
     {
-        int Id;
-        string Name;
-        string Description;
-        string Json;
-        string Template;
-        string SqlStr;
-        string SqlPart;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Json { get; set; }
+        public string Template { get; set; }   
+        public string SqlStr { get; set; } 
+        public string SqlPart { get; set; }
     }
 }

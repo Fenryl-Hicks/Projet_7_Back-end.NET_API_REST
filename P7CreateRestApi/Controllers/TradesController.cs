@@ -1,5 +1,7 @@
-using P7CreateRestApi.Entities;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
+using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,53 +9,60 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class TradesController : ControllerBase
     {
-        // TODO: Inject Trade service
+        private readonly TradeService _service;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public TradesController(TradeService service)
         {
-            // TODO: find all Trade, add to model
-            return Ok();
+            _service = service;
         }
 
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddTrade([FromBody]Trade trade)
+        public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            var trades = await _service.GetAllAsync();
+            return Ok(trades);
         }
 
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]Trade trade)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            // TODO: check data valid and save to db, after saving return Trade list
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get Trade by Id and to model then show to the form
-            return Ok();
+            var trade = await _service.GetByIdAsync(id);
+            if (trade == null)
+                return NotFound();
+            return Ok(trade);
         }
 
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateTrade(int id, [FromBody] Trade trade)
+        public async Task<IActionResult> Create([FromBody] Trade trade)
         {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var created = await _service.CreateAsync(trade);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult DeleteTrade(int id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Trade trade)
         {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var updated = await _service.UpdateAsync(id, trade);
+            if (!updated)
+                return NotFound();
+
+            return Ok(trade);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }
