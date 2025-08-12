@@ -1,34 +1,40 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using P7CreateRestApi.Data;
-using P7CreateRestApi.Repositories;
-using P7CreateRestApi.Services;
+using P7CreateRestApi.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
-ConfigurationManager configuration = builder.Configuration;
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+// Ajout du DbContext
 builder.Services.AddDbContext<LocalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<BidRepository>();
-builder.Services.AddScoped<CurvePointRepository>();
-builder.Services.AddScoped<RatingRepository>();
-builder.Services.AddScoped<RuleNameRepository>();
-builder.Services.AddScoped<TradeRepository>();
-builder.Services.AddScoped<TradeService>();
-builder.Services.AddScoped<BidService>();
-builder.Services.AddScoped<CurvePointService>();
-builder.Services.AddScoped<RatingService>();
-builder.Services.AddScoped<RuleNameService>();
+// Ajout de l'identité avec User personnalisé
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<LocalDbContext>()
+    .AddDefaultTokenProviders();
 
-
+// Authentification JWT
+builder.Services.AddAuthentication("JwtBearer")
+    .AddJwtBearer("JwtBearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("SuperSecretKeyForJwtDontShare123456")) // ?? à sécuriser dans appsettings.json
+        };
+    });
 
 var app = builder.Build();
 
@@ -40,6 +46,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication(); // ?? Nécessaire pour que les tokens JWT soient pris en compte
+app.UseAuthorization();
 
 app.MapControllers();
 

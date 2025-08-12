@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P7CreateRestApi.Entities;
 using P7CreateRestApi.Services;
@@ -5,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TradesController : ControllerBase
     {
         private readonly TradeService _service;

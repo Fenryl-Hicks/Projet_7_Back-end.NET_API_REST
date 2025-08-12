@@ -1,6 +1,6 @@
 ﻿using P7CreateRestApi.Entities;
 
-namespace P7CreateRestApi.Repositories
+namespace P7CreateRestApi.Repositories.Interfaces
 {
     public interface ITradeRepository
     {
