@@ -1,67 +1,78 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using P7CreateRestApi.Entities;
-using P7CreateRestApi.Services;
+using Microsoft.Extensions.Logging;
+using P7CreateRestApi.Dtos.Curves;   // <-- Create/Update/Response/ListItem DTOs
+using P7CreateRestApi.Entities;      // <-- CurvePoint entity
+using P7CreateRestApi.Services;      // <-- CurvePointService
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CurvesController : ControllerBase
     {
         private readonly CurvePointService _service;
+        private readonly ILogger<CurvesController> _logger;
+        private readonly IMapper _mapper;
 
-        public CurvesController(CurvePointService service)
+        public CurvesController(CurvePointService service, ILogger<CurvesController> logger, IMapper mapper)
         {
             _service = service;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<CurvePointListItemDto>>> GetAll(CancellationToken ct)
         {
-            var curves = await _service.GetAllAsync();
-            return Ok(curves);
+            var entities = await _service.GetAllAsync();
+            var list = _mapper.Map<IEnumerable<CurvePointListItemDto>>(entities);
+            return Ok(list);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<CurvePointResponseDto>> Get(int id, CancellationToken ct)
         {
-            var curve = await _service.GetByIdAsync(id);
-            if (curve == null)
-                return NotFound();
-            return Ok(curve);
+            var entity = await _service.GetByIdAsync(id);
+            if (entity is null) return NotFound();
+            return Ok(_mapper.Map<CurvePointResponseDto>(entity));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CurvePoint curve)
+        public async Task<ActionResult<CurvePointResponseDto>> Create([FromBody] CreateCurvePointRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            // [ApiController] => 400 auto si dto invalide
+            var entity = _mapper.Map<CurvePoint>(dto);
+            var created = await _service.CreateAsync(entity);
+            var response = _mapper.Map<CurvePointResponseDto>(created);
 
-            var created = await _service.CreateAsync(curve);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            _logger.LogInformation("CurvePoint created with id {Id}", response.Id);
+
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CurvePoint curve)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateCurvePointRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<CurvePoint>(dto);
+            var updated = await _service.UpdateAsync(id, entity);
 
-            var updated = await _service.UpdateAsync(id, curve);
-            if (!updated)
-                return NotFound();
+            if (!updated) return NotFound();
 
-            return Ok(curve);
+            _logger.LogInformation("CurvePoint updated with id {Id}", id);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
             var deleted = await _service.DeleteAsync(id);
-            if (!deleted)
-                return NotFound();
+            if (!deleted) return NotFound();
 
+            _logger.LogInformation("CurvePoint deleted with id {Id}", id);
             return NoContent();
         }
     }

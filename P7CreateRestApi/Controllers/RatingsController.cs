@@ -1,67 +1,78 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using P7CreateRestApi.Entities;
-using P7CreateRestApi.Services;
+using Microsoft.Extensions.Logging;
+using P7CreateRestApi.Dtos.Ratings; // <-- Create/Update/Response/ListItem DTOs
+using P7CreateRestApi.Entities;     // <-- Rating entity
+using P7CreateRestApi.Services;     // <-- RatingService
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RatingsController : ControllerBase
     {
         private readonly RatingService _service;
+        private readonly ILogger<RatingsController> _logger;
+        private readonly IMapper _mapper;
 
-        public RatingsController(RatingService service)
+        public RatingsController(RatingService service, ILogger<RatingsController> logger, IMapper mapper)
         {
             _service = service;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<RatingListItemDto>>> GetAll(CancellationToken ct)
         {
-            var ratings = await _service.GetAllAsync();
-            return Ok(ratings);
+            var entities = await _service.GetAllAsync();
+            var list = _mapper.Map<IEnumerable<RatingListItemDto>>(entities);
+            return Ok(list);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RatingResponseDto>> Get(int id, CancellationToken ct)
         {
-            var rating = await _service.GetByIdAsync(id);
-            if (rating == null)
-                return NotFound();
-            return Ok(rating);
+            var entity = await _service.GetByIdAsync(id);
+            if (entity is null) return NotFound();
+            return Ok(_mapper.Map<RatingResponseDto>(entity));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Rating rating)
+        public async Task<ActionResult<RatingResponseDto>> Create([FromBody] CreateRatingRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            // [ApiController] => 400 auto si dto invalide
+            var entity = _mapper.Map<Rating>(dto);
+            var created = await _service.CreateAsync(entity);
+            var response = _mapper.Map<RatingResponseDto>(created);
 
-            var created = await _service.CreateAsync(rating);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            _logger.LogInformation("Rating created with id {Id} (OrderNumber={Order})", response.Id, response.OrderNumber);
+
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Rating rating)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateRatingRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<Rating>(dto);
+            var updated = await _service.UpdateAsync(id, entity);
 
-            var updated = await _service.UpdateAsync(id, rating);
-            if (!updated)
-                return NotFound();
+            if (!updated) return NotFound();
 
-            return Ok(rating);
+            _logger.LogInformation("Rating updated with id {Id}", id);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
             var deleted = await _service.DeleteAsync(id);
-            if (!deleted)
-                return NotFound();
+            if (!deleted) return NotFound();
 
+            _logger.LogInformation("Rating deleted with id {Id}", id);
             return NoContent();
         }
     }

@@ -1,7 +1,12 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using P7CreateRestApi.Entities;
-using P7CreateRestApi.Services;
+using Microsoft.Extensions.Logging;
+using P7CreateRestApi.Dtos.Trades; // <-- Create/Update/Response/ListItem DTOs
+using P7CreateRestApi.Entities;    // <-- Trade entity
+using P7CreateRestApi.Services;    // <-- TradeService
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
@@ -12,58 +17,62 @@ namespace P7CreateRestApi.Controllers
     public class TradesController : ControllerBase
     {
         private readonly TradeService _service;
+        private readonly ILogger<TradesController> _logger;
+        private readonly IMapper _mapper;
 
-        public TradesController(TradeService service)
+        public TradesController(TradeService service, ILogger<TradesController> logger, IMapper mapper)
         {
             _service = service;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<TradeListItemDto>>> GetAll(CancellationToken ct)
         {
-            var trades = await _service.GetAllAsync();
-            return Ok(trades);
+            var entities = await _service.GetAllAsync();
+            var list = _mapper.Map<IEnumerable<TradeListItemDto>>(entities);
+            return Ok(list);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TradeResponseDto>> Get(int id, CancellationToken ct)
         {
-            var trade = await _service.GetByIdAsync(id);
-            if (trade == null)
-                return NotFound();
-            return Ok(trade);
+            var entity = await _service.GetByIdAsync(id);
+            if (entity is null) return NotFound();
+            return Ok(_mapper.Map<TradeResponseDto>(entity));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Trade trade)
+        public async Task<ActionResult<TradeResponseDto>> Create([FromBody] CreateTradeRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<Trade>(dto);
+            var created = await _service.CreateAsync(entity);
+            var response = _mapper.Map<TradeResponseDto>(created);
 
-            var created = await _service.CreateAsync(trade);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            _logger.LogInformation("Trade created with id {Id} for account {Account}", response.Id, response.Account);
+
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Trade trade)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateTradeRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<Trade>(dto);
+            var updated = await _service.UpdateAsync(id, entity);
+            if (!updated) return NotFound();
 
-            var updated = await _service.UpdateAsync(id, trade);
-            if (!updated)
-                return NotFound();
-
-            return Ok(trade);
+            _logger.LogInformation("Trade updated with id {Id}", id);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
             var deleted = await _service.DeleteAsync(id);
-            if (!deleted)
-                return NotFound();
+            if (!deleted) return NotFound();
 
+            _logger.LogInformation("Trade deleted with id {Id}", id);
             return NoContent();
         }
     }

@@ -1,67 +1,77 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using P7CreateRestApi.Entities;
-using P7CreateRestApi.Services;
+using Microsoft.Extensions.Logging;
+using P7CreateRestApi.Dtos.RuleNames; // <-- Create/Update/Response/ListItem DTOs
+using P7CreateRestApi.Entities;       // <-- RuleName entity
+using P7CreateRestApi.Services;       // <-- RuleNameService
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RuleNamesController : ControllerBase
     {
         private readonly RuleNameService _service;
+        private readonly ILogger<RuleNamesController> _logger;
+        private readonly IMapper _mapper;
 
-        public RuleNamesController(RuleNameService service)
+        public RuleNamesController(RuleNameService service, ILogger<RuleNamesController> logger, IMapper mapper)
         {
             _service = service;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<RuleNameListItemDto>>> GetAll(CancellationToken ct)
         {
-            var rules = await _service.GetAllAsync();
-            return Ok(rules);
+            var entities = await _service.GetAllAsync();
+            var list = _mapper.Map<IEnumerable<RuleNameListItemDto>>(entities);
+            return Ok(list);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RuleNameResponseDto>> Get(int id, CancellationToken ct)
         {
-            var rule = await _service.GetByIdAsync(id);
-            if (rule == null)
-                return NotFound();
-            return Ok(rule);
+            var entity = await _service.GetByIdAsync(id);
+            if (entity is null) return NotFound();
+            return Ok(_mapper.Map<RuleNameResponseDto>(entity));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RuleName rule)
+        public async Task<ActionResult<RuleNameResponseDto>> Create([FromBody] CreateRuleNameRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<RuleName>(dto);
+            var created = await _service.CreateAsync(entity);
+            var response = _mapper.Map<RuleNameResponseDto>(created);
 
-            var created = await _service.CreateAsync(rule);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            _logger.LogInformation("RuleName created with id {Id}", response.Id);
+
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] RuleName rule)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateRuleNameRequestDto dto, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var entity = _mapper.Map<RuleName>(dto);
+            var updated = await _service.UpdateAsync(id, entity);
 
-            var updated = await _service.UpdateAsync(id, rule);
-            if (!updated)
-                return NotFound();
+            if (!updated) return NotFound();
 
-            return Ok(rule);
+            _logger.LogInformation("RuleName updated with id {Id}", id);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
             var deleted = await _service.DeleteAsync(id);
-            if (!deleted)
-                return NotFound();
+            if (!deleted) return NotFound();
 
+            _logger.LogInformation("RuleName deleted with id {Id}", id);
             return NoContent();
         }
     }
