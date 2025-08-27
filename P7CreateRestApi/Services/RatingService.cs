@@ -1,13 +1,13 @@
 ﻿using P7CreateRestApi.Entities;
-using P7CreateRestApi.Repositories;
+using P7CreateRestApi.Repositories; // pour IRatingRepository
 
 namespace P7CreateRestApi.Services
 {
     public class RatingService
     {
-        private readonly RatingRepository _repository;
+        private readonly IRatingRepository _repository; // <-- interface
 
-        public RatingService(RatingRepository repository)
+        public RatingService(IRatingRepository repository) // <-- interface ici aussi
         {
             _repository = repository;
         }

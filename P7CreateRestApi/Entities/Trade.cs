@@ -12,18 +12,18 @@ namespace P7CreateRestApi.Entities
         public double? BuyPrice { get; set; }
         public double? SellPrice { get; set; }
         public DateTime? TradeDate { get; set; }
-        public string TradeSecurity { get; set; }
-        public string TradeStatus { get; set; }
-        public string Trader { get; set; }
-        public string Benchmark { get; set; }
-        public string Book { get; set; }
-        public string CreationName { get; set; }
+        public string? TradeSecurity { get; set; }
+        public string? TradeStatus { get; set; }
+        public string? Trader { get; set; }
+        public string? Benchmark { get; set; }
+        public string? Book { get; set; }
+        public string? CreationName { get; set; }
         public DateTime? CreationDate { get; set; }
-        public string RevisionName { get; set; }
+        public string? RevisionName { get; set; }
         public DateTime? RevisionDate { get; set; }
-        public string DealName { get; set; }
-        public string DealType { get; set; }
-        public string SourceListId { get; set; }
-        public string Side { get; set; }
+        public string? DealName { get; set; }
+        public string? DealType { get; set; }
+        public string? SourceListId { get; set; }
+        public string? Side { get; set; }
     }
 }

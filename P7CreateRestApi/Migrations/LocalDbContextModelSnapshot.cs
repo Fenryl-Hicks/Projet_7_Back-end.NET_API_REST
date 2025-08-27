@@ -174,7 +174,6 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Benchmark")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("BidListDate")
@@ -184,11 +183,9 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("BidSecurity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BidStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BidType")
@@ -196,45 +193,36 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Book")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Commentary")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreationName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DealName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DealType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RevisionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RevisionName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Side")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SourceListId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Trader")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -279,18 +267,15 @@ namespace P7CreateRestApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FitchRating")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MoodysRating")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte?>("OrderNumber")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("SandPRating")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -307,11 +292,9 @@ namespace P7CreateRestApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Json")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -319,15 +302,12 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SqlPart")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SqlStr")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Template")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -352,11 +332,9 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Benchmark")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Book")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("BuyPrice")
@@ -369,22 +347,18 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreationName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DealName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DealType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RevisionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RevisionName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("SellPrice")
@@ -394,26 +368,21 @@ namespace P7CreateRestApi.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Side")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SourceListId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TradeDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TradeSecurity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TradeStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Trader")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

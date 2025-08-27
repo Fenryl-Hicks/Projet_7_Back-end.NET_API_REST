@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using P7CreateRestApi.Dtos.Bids;   // <-- Create/Update/Response/ListItem DTOs
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace P7CreateRestApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BidsController : ControllerBase

@@ -1,40 +1,25 @@
 ﻿using P7CreateRestApi.Entities;
-using P7CreateRestApi.Repositories;
+using P7CreateRestApi.Repositories; // IRuleNameRepository
 
 namespace P7CreateRestApi.Services
 {
     public class RuleNameService
     {
-        private readonly RuleNameRepository _repository;
+        private readonly IRuleNameRepository _repository;
 
-        public RuleNameService(RuleNameRepository repository)
+        public RuleNameService(IRuleNameRepository repository)
         {
             _repository = repository;
         }
 
-        public Task<List<RuleName>> GetAllAsync()
-        {
-            return _repository.GetAllAsync();
-        }
+        public Task<List<RuleName>> GetAllAsync() => _repository.GetAllAsync();
 
-        public Task<RuleName?> GetByIdAsync(int id)
-        {
-            return _repository.GetByIdAsync(id);
-        }
+        public Task<RuleName?> GetByIdAsync(int id) => _repository.GetByIdAsync(id);
 
-        public Task<RuleName> CreateAsync(RuleName rule)
-        {
-            return _repository.AddAsync(rule);
-        }
+        public Task<RuleName> CreateAsync(RuleName rule) => _repository.AddAsync(rule);
 
-        public Task<bool> UpdateAsync(int id, RuleName rule)
-        {
-            return _repository.UpdateAsync(id, rule);
-        }
+        public Task<bool> UpdateAsync(int id, RuleName rule) => _repository.UpdateAsync(id, rule);
 
-        public Task<bool> DeleteAsync(int id)
-        {
-            return _repository.DeleteAsync(id);
-        }
+        public Task<bool> DeleteAsync(int id) => _repository.DeleteAsync(id);
     }
 }
