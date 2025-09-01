@@ -1,0 +1,34 @@
+2025-08-13 16:03:30.365 +02:00 [INF] === TEST FILE LOG CREATION ===
+2025-08-13 16:03:30.411 +02:00 [INF] API endpoints are mapped and ready to receive requests.
+2025-08-13 16:03:30.424 +02:00 [INF] User profile is available. Using 'C:\Users\xavie\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-08-13 16:03:30.469 +02:00 [INF] Now listening on: https://localhost:7210
+2025-08-13 16:03:30.471 +02:00 [INF] Now listening on: http://localhost:5267
+2025-08-13 16:03:30.473 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-08-13 16:03:30.473 +02:00 [INF] Hosting environment: Development
+2025-08-13 16:03:30.474 +02:00 [INF] Content root path: C:\Users\xavie\Source\Repos\Projet_7_Back-end.NET_API_REST\P7CreateRestApi
+2025-08-13 16:13:23.632 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger - null null
+2025-08-13 16:13:23.650 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger - 301 0 null 18.237ms
+2025-08-13 16:13:23.654 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/index.html - null null
+2025-08-13 16:13:23.702 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/index.html - 200 null text/html;charset=utf-8 48.2238ms
+2025-08-13 16:13:23.718 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/swagger-ui.css - null null
+2025-08-13 16:13:23.731 +02:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-08-13 16:13:23.732 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/swagger-ui.css - 200 144929 text/css 14.4594ms
+2025-08-13 16:13:23.766 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/favicon-32x32.png - null null
+2025-08-13 16:13:23.768 +02:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-08-13 16:13:23.769 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/favicon-32x32.png - 200 628 image/png 3.5728ms
+2025-08-13 16:13:23.784 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/v1/swagger.json - null null
+2025-08-13 16:13:23.829 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 44.7489ms
+2025-08-13 16:15:08.437 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger - null null
+2025-08-13 16:15:08.440 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger - 301 0 null 2.7902ms
+2025-08-13 16:15:08.453 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/index.html - null null
+2025-08-13 16:15:08.456 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/index.html - 200 null text/html;charset=utf-8 2.9903ms
+2025-08-13 16:15:08.475 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/swagger-ui.css - null null
+2025-08-13 16:15:08.480 +02:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-08-13 16:15:08.481 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/swagger-ui.css - 200 144929 text/css 6.0277ms
+2025-08-13 16:15:08.540 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/favicon-32x32.png - null null
+2025-08-13 16:15:08.544 +02:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-08-13 16:15:08.545 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/favicon-32x32.png - 499 628 image/png 4.2493ms
+2025-08-13 16:15:08.558 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger/v1/swagger.json - null null
+2025-08-13 16:15:08.567 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 9.5025ms
+2025-08-13 16:17:38.187 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7210/swagger - null null
+2025-08-13 16:17:38.190 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7210/swagger - 30
