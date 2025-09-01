@@ -1,12 +1,10 @@
-using System;
-
 namespace P7CreateRestApi.Entities
 {
     public class Trade
     {
         public int Id { get; set; }
         public string Account { get; set; }
-        public string AccountType { get; set; }
+        public string? AccountType { get; set; }
         public double? BuyQuantity { get; set; }
         public double? SellQuantity { get; set; }
         public double? BuyPrice { get; set; }

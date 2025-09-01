@@ -5,9 +5,9 @@ namespace P7CreateRestApi.Services
 {
     public class BidService
     {
-        private readonly IBidRepository _repository; // <-- interface
+        private readonly IBidRepository _repository; 
 
-        public BidService(IBidRepository repository) // <-- interface ici aussi
+        public BidService(IBidRepository repository) 
         {
             _repository = repository;
         }

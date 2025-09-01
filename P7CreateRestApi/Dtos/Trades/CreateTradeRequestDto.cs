@@ -5,7 +5,7 @@ namespace P7CreateRestApi.Dtos.Trades;
 public class CreateTradeRequestDto
 {
     [Required, StringLength(50)] public string Account { get; set; } = default!;
-    [Required, StringLength(30)] public string AccountType { get; set; } = default!;
+    [StringLength(30)] public string? AccountType { get; set; } = default!;
     [Range(0, double.MaxValue)] public double? BuyQuantity { get; set; }
     [Range(0, double.MaxValue)] public double? SellQuantity { get; set; }
     [Range(0, double.MaxValue)] public double? BuyPrice { get; set; }

@@ -1,13 +1,13 @@
 ﻿using P7CreateRestApi.Entities;
-using P7CreateRestApi.Repositories; // <-- pour ICurvePointRepository
+using P7CreateRestApi.Repositories; 
 
 namespace P7CreateRestApi.Services
 {
     public class CurvePointService
     {
-        private readonly ICurvePointRepository _repository; // <-- interface
+        private readonly ICurvePointRepository _repository; 
 
-        public CurvePointService(ICurvePointRepository repository) // <-- interface ici aussi
+        public CurvePointService(ICurvePointRepository repository) 
         {
             _repository = repository;
         }

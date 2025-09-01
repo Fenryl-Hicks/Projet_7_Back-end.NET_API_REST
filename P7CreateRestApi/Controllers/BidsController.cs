@@ -1,13 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using P7CreateRestApi.Dtos.Bids;   // <-- Create/Update/Response/ListItem DTOs
-using P7CreateRestApi.Entities;    // <-- Bid entity
-using P7CreateRestApi.Services;    // <-- BidService
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using P7CreateRestApi.Dtos.Bids;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -46,7 +42,7 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<BidResponseDto>> Create([FromBody] CreateBidRequestDto dto, CancellationToken ct)
         {
-            // [ApiController] => 400 auto si dto invalide
+            
             var entity = _mapper.Map<Bid>(dto);
             var created = await _service.CreateAsync(entity);
             var response = _mapper.Map<BidResponseDto>(created);

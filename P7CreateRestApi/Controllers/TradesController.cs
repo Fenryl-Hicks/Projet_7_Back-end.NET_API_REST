@@ -1,13 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using P7CreateRestApi.Dtos.Trades; // <-- Create/Update/Response/ListItem DTOs
-using P7CreateRestApi.Entities;    // <-- Trade entity
-using P7CreateRestApi.Services;    // <-- TradeService
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using P7CreateRestApi.Dtos.Trades;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {

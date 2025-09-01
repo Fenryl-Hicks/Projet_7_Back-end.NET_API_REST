@@ -1,5 +1,5 @@
 ﻿using P7CreateRestApi.Entities;
-using P7CreateRestApi.Repositories; // IRuleNameRepository
+using P7CreateRestApi.Repositories; 
 
 namespace P7CreateRestApi.Services
 {

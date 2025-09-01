@@ -1,12 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using P7CreateRestApi.Dtos.Curves;   // <-- Create/Update/Response/ListItem DTOs
-using P7CreateRestApi.Entities;      // <-- CurvePoint entity
-using P7CreateRestApi.Services;      // <-- CurvePointService
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using P7CreateRestApi.Dtos.Curves;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -44,7 +40,7 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<CurvePointResponseDto>> Create([FromBody] CreateCurvePointRequestDto dto, CancellationToken ct)
         {
-            // [ApiController] => 400 auto si dto invalide
+          
             var entity = _mapper.Map<CurvePoint>(dto);
             var created = await _service.CreateAsync(entity);
             var response = _mapper.Map<CurvePointResponseDto>(created);

@@ -1,10 +1,7 @@
 ﻿using Moq;
-using P7CreateRestApi.Entities;       
-using P7CreateRestApi.Repositories;   
-using P7CreateRestApi.Services;       
-using Xunit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Repositories;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Tests.Services
 {

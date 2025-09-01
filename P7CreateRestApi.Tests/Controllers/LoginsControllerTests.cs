@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using P7CreateRestApi.ClassDto;        
-using P7CreateRestApi.Controllers;     
-using P7CreateRestApi.Entities;        
-using Xunit;
+using P7CreateRestApi.ClassDto;
+using P7CreateRestApi.Controllers;
+using P7CreateRestApi.Entities;
 
 // Alias pour lever l'ambiguïté CS0104
 using IdentitySignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -21,7 +17,7 @@ namespace P7CreateRestApi.Tests.Controllers
 {
     public class LoginsControllerTests
     {
-        // Helpers pour mocker UserManager/SignInManager proprement 
+       
 
         private static Mock<UserManager<User>> MockUserManager()
         {
@@ -54,7 +50,7 @@ namespace P7CreateRestApi.Tests.Controllers
 
         private static IConfiguration BuildJwtConfig()
         {
-            // Configuration en mémoire pour la génération du JWT dans le controller
+            
             var dict = new Dictionary<string, string?>
             {
                 ["Jwt:Key"] = "SuperSecretKey_For_Tests_Change_Me",
@@ -143,7 +139,7 @@ namespace P7CreateRestApi.Tests.Controllers
             var ok = Assert.IsType<OkObjectResult>(result);
             var body = ok.Value!;
 
-            // helper local pour lire une propriété en ignorant la casse
+            
             static object? GetProp(object obj, string name)
             {
                 var pi = obj.GetType().GetProperty(
@@ -160,7 +156,7 @@ namespace P7CreateRestApi.Tests.Controllers
             var email = GetProp(body, "email");
             var fullname = GetProp(body, "fullname");
 
-            Assert.NotNull(token);         // peu importe la casse: token/Token
+            Assert.NotNull(token);       
             Assert.NotNull(expiresAtUtc);
             Assert.Equal(user.Email, email as string);
             Assert.Equal(user.Fullname, fullname as string);

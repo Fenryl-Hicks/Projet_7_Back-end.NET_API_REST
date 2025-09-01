@@ -24,25 +24,23 @@ try
     Log.Information("Starting up");
 
     var builder = WebApplication.CreateBuilder(args);
-
-    // Crée le dossier logs 
+    
     Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, "logs"));
 
-    // 2) Remplacer le logger par défaut par Serilog
     builder.Host.UseSerilog((ctx, services, cfg) =>
-        cfg.ReadFrom.Configuration(ctx.Configuration)
-           .ReadFrom.Services(services)
-           .Enrich.FromLogContext()
-           .WriteTo.Console()
-           .WriteTo.File(
-               Path.Combine(AppContext.BaseDirectory, "logs", "log-.txt"),
-               rollingInterval: RollingInterval.Day,
-               retainedFileCountLimit: 7,
-               buffered: false,        
-               shared: true)            
-    );
+    cfg
+       .Enrich.FromLogContext()
+       .MinimumLevel.Debug()
+       .WriteTo.Console()
+       .WriteTo.File(
+           Path.Combine(Directory.GetCurrentDirectory(), "logs", "log-.txt"),
+           rollingInterval: RollingInterval.Day,
+           retainedFileCountLimit: 7,
+           buffered: false,
+           shared: true)
+);
 
-    // Services
+
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
 
@@ -50,18 +48,16 @@ try
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "P7CreateRestApi", Version = "v1" });
 
-        // Définir le schéma de sécurité
+        // Définition de la sécurité pour Swagger
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
+            Description = "Entrez **Bearer** + espace + votre token JWT.\n\nExemple :\nBearer eyJhbGciOiJIUzI1NiIs...",
             Name = "Authorization",
-            Type = SecuritySchemeType.Http,    // <-- ICI : Http au lieu de ApiKey
-            Scheme = "Bearer",                // <-- Respecter la casse
-            BearerFormat = "JWT",
             In = ParameterLocation.Header,
-            Description = "Entrez : Bearer {votre_token}"
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
         });
 
-        // Exiger le schéma pour toutes les opérations
         c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -76,7 +72,6 @@ try
             Array.Empty<string>()
         }
     });
-
 });
 
 
@@ -86,7 +81,7 @@ try
     builder.Services.AddScoped<RuleNameService>();
     builder.Services.AddScoped<TradeService>();
 
-    // Repositories (interface -> implémentation)
+
     builder.Services.AddScoped<IBidRepository, BidRepository>();
     builder.Services.AddScoped<ICurvePointRepository, CurvePointRepository>();
     builder.Services.AddScoped<IRatingRepository, RatingRepository>();
@@ -99,11 +94,9 @@ try
     }, typeof(ApiMappingProfile).Assembly);
 
 
-    // DbContext
     builder.Services.AddDbContext<LocalDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    // Identity
     builder.Services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<LocalDbContext>()
         .AddDefaultTokenProviders();
@@ -119,25 +112,26 @@ try
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-        .AddJwtBearer ( options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                
-                ValidateIssuer = !string.IsNullOrWhiteSpace(jwtIssuer),
-                ValidateAudience = !string.IsNullOrWhiteSpace(jwtAudience),
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtIssuer,
-                ValidAudience = jwtAudience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtKey))
-                     
-            };
-        });
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero, // <-- Évite les erreurs de délai sur les tokens
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 
-    
+
+
     builder.Services.AddHttpLogging(o =>
     {
         o.LoggingFields =

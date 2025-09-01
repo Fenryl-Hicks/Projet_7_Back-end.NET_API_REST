@@ -4,10 +4,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using P7CreateRestApi.ClassDto;   
-using P7CreateRestApi.Entities;   
+using P7CreateRestApi.ClassDto;
+using P7CreateRestApi.Entities;
 using Serilog;
 
 namespace P7CreateRestApi.Controllers

@@ -1,12 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using P7CreateRestApi.Dtos.Ratings; // <-- Create/Update/Response/ListItem DTOs
-using P7CreateRestApi.Entities;     // <-- Rating entity
-using P7CreateRestApi.Services;     // <-- RatingService
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using P7CreateRestApi.Dtos.Ratings;
+using P7CreateRestApi.Entities;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {

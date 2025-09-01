@@ -1,5 +1,3 @@
-using System;
-
 namespace P7CreateRestApi.Entities
 {
     public class RuleName
